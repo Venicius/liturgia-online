@@ -3,11 +3,12 @@ import { useRouter } from 'next/router'
 import ReactMarkdown from 'react-markdown'
 import useSWR from 'swr'
 import Layout from '../../components/Layout'
+import formatEndpoint from '../../utils/formatEndpoint'
 const fetcher = (url) => fetch(url).then((res) => res.json())
 const Laudes = () => {
     const router = useRouter()
     const slug = router.query.slug
-    const { data, error } = useSWR(() => 'http://localhost:1337/api/diarias?filters[data][$eq]=' + slug.toString(), fetcher)
+    const { data, error } = useSWR(() => formatEndpoint(slug, "laudes"), fetcher)
 
     if (error) return <div>Falha ao carregar...</div>
     if (!router.isFallback && data == undefined) return <div>Carregando...</div>
